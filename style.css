@@ -1,0 +1,198 @@
+/* ============================================================
+   R2 NUSANTARA — style.css
+   CSS kustom di luar utility Tailwind (Tailwind CDN tetap
+   dipakai untuk layout & warna dasar, file ini khusus untuk
+   detail brand + micro-interaction).
+   ============================================================ */
+
+:root {
+  --navy: #111827;
+  --gold: #E5C385;
+  --gold-soft: rgba(229, 195, 133, 0.55);
+  --gold-glow: rgba(229, 195, 133, 0.35);
+  --verified-blue: #1D9BF0;
+}
+
+/* ------------------------------------------------------------
+   1. BASE
+   ------------------------------------------------------------ */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #e2e8f0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ------------------------------------------------------------
+   2. BRAND MARK — ring animasi tipis + badge verified
+   Animasi hanya menyentuh ring & badge, bukan seluruh header.
+   ------------------------------------------------------------ */
+.logo-ring-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.logo-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    var(--gold-soft) 22deg,
+    transparent 55deg,
+    transparent 360deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 1.6px), #000 calc(100% - 1.6px));
+          mask: radial-gradient(farthest-side, transparent calc(100% - 1.6px), #000 calc(100% - 1.6px));
+  animation: logoRingSpin 6s linear infinite;
+  will-change: transform;
+}
+
+@keyframes logoRingSpin {
+  to { transform: rotate(360deg); }
+}
+
+.verified-badge {
+  display: inline-block;
+  animation: badgePulse 2.6s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.12); opacity: 0.92; }
+}
+
+/* ------------------------------------------------------------
+   3. TOMBOL & ELEMEN INTERAKTIF (nav, header, CTA, dsb)
+   Hover: warna + micro-lift. Active: feedback tekan.
+   Focus: outline jelas untuk keyboard.
+   ------------------------------------------------------------ */
+.btn-interactive {
+  transition: transform 0.18s ease, background-color 0.18s ease,
+              color 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.btn-interactive:hover {
+  transform: translateY(-1.5px);
+}
+.btn-interactive:active {
+  transform: translateY(0) scale(0.95);
+}
+.btn-interactive:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: inherit;
+}
+
+/* ------------------------------------------------------------
+   4. CARD (kategori, produk, benefit/trust) — hover halus
+   ------------------------------------------------------------ */
+.card-interactive {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.card-interactive:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
+  border-color: var(--gold-soft);
+}
+.card-interactive:focus-within {
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
+  border-color: var(--gold-soft);
+}
+
+/* ------------------------------------------------------------
+   5. SEARCH — efek fokus pada bar, arrow button responsif
+   ------------------------------------------------------------ */
+.search-bar {
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.search-bar:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-glow);
+}
+
+.search-arrow-btn:active {
+  background-color: #0b1420;
+}
+
+/* ------------------------------------------------------------
+   6. BOTTOM NAV — active indicator garis gold tipis
+   ------------------------------------------------------------ */
+.nav-indicator {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  width: 14px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gold);
+  box-shadow: 0 0 6px var(--gold-glow);
+  transform: translateX(-50%) scaleX(0.4);
+  opacity: 0;
+  animation: navIndicatorIn 0.25s ease forwards;
+}
+
+@keyframes navIndicatorIn {
+  to {
+    transform: translateX(-50%) scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------------------------
+   7. CART BADGE — micro-interaction saat jumlah berubah
+   ------------------------------------------------------------ */
+.badge-pop {
+  animation: cartPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes cartPop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.35); }
+  65%  { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+/* ------------------------------------------------------------
+   8. AKSESIBILITAS — hormati prefers-reduced-motion
+   Matikan semua animasi/transform bergerak, sisakan perubahan
+   warna saja untuk hover/focus.
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .logo-ring {
+    animation: none;
+    opacity: 0.45;
+  }
+  .verified-badge {
+    animation: none;
+  }
+  .btn-interactive,
+  .btn-interactive:hover,
+  .btn-interactive:active,
+  .card-interactive,
+  .card-interactive:hover {
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    transform: none !important;
+  }
+  .nav-indicator {
+    animation: none;
+    transform: translateX(-50%) scaleX(1);
+    opacity: 1;
+  }
+  .badge-pop {
+    animation: none;
+  }
+}
