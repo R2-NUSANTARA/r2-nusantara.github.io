@@ -1,0 +1,13 @@
+{
+  "name": "r2-nusantara-website",
+  "version": "1.0.0",
+  "description": "R2 Nusantara - Wholesale Trading Partner",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Static site - no build needed'",
+    "lint": "echo 'No linter configured'"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.4.1"
+  }
+}
